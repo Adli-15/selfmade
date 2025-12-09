@@ -29,6 +29,7 @@
             padding: 20px;
             overflow: hidden;
             position: relative;
+            -webkit-tap-highlight-color: transparent;
         }
 
         /* Side image containers (outside the main content) */
@@ -527,25 +528,12 @@
             z-index: -1;
         }
 
-        /* Add this to your existing CSS */
-        #spotify-player iframe {
-            transition: opacity 0.3s ease;
-        }
-
+        /* Spotify player styles */
         #spotify-player {
-            min-height: 352px; /* Prevent layout shift */
+            transition: opacity 0.3s ease;
+            min-height: 352px;
         }
 
-        /* Preloader for images */
-        .image-preloader {
-            position: absolute;
-            width: 0;
-            height: 0;
-            overflow: hidden;
-            opacity: 0;
-        }
-
-        /* Loading indicator for Spotify */
         .spotify-loading {
             display: flex;
             flex-direction: column;
@@ -563,45 +551,19 @@
             font-weight: bold;
         }
 
-        /* Play button overlay */
-        .play-overlay {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(255, 64, 129, 0.9);
-            color: white;
-            padding: 15px 30px;
-            border-radius: 50px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            z-index: 100;
-            box-shadow: 0 5px 20px rgba(255, 64, 129, 0.5);
-            transition: all 0.3s ease;
-        }
-
-        .play-overlay:hover {
-            background: rgba(255, 64, 129, 1);
-            transform: translate(-50%, -50%) scale(1.05);
-        }
-
     </style>
 </head>
 
 <body>
-    <!-- Image preloader (hidden) -->
-    <div class="image-preloader" id="imagePreloader"></div>
-
     <!-- Left side image and name -->
     <div class="side-container left-side">
-        <img class="side-image" id="leftImage" src="image/img1.jpg" alt="The Prettiest Girl">
+        <img class="side-image" id="leftImage" src="image/img1.jpg" alt="The Prettiest Girl" loading="lazy">
         <div class="side-name">NUR RISMAYRA HAYREEN</div>
     </div>
 
     <!-- Right side image and name -->
     <div class="side-container right-side">
-        <img class="side-image" id="rightImage" src="image/img2.jpg" alt="My Sweet Princess">
+        <img class="side-image" id="rightImage" src="image/img2.jpg" alt="My Sweet Princess" loading="lazy">
         <div class="side-name">NUR RISMAYRA HAYREEN</div>
     </div>
 
@@ -610,15 +572,12 @@
         
         <!-- Page 1-4 Combined: Interactive Button Game -->
         <div class="page active" id="Page1">
-
             <div class="text-border-romantic">
                 <h2 id="app"></h2>
             </div>
-
             <div class="text-border-romantic">
                 <h2>Are you ready?</h2>
             </div>
-
             <div class="button-game-container" id="buttonGame">
                 <div class="danger-zone" id="dangerZone"></div>
                 <button class="game-button" id="yesButton">YES</button>
@@ -631,9 +590,7 @@
             <div class="text-border-romantic-static">
                 <h2>HIII BEFDAYY GIRLL</h2>
             </div>
-            
-            <img class="love-logo" src="image/love logo.png" alt="Love">
-            
+            <img class="love-logo" src="image/love logo.png" alt="Love" loading="lazy">
             <div class="loading-container">
                 <p>Loading your special surprise...</p>
                 <div class="loading-bar-container">
@@ -651,9 +608,7 @@
                 <h1>BIRTHDAY!</h1>
                 <p>PRESS A BUTTON</p>
             </div>
-            
-            <img class="love-logo" src="image/love logo.png" alt="Love">
-            
+            <img class="love-logo" src="image/love logo.png" alt="Love" loading="lazy">
             <div class="menu-container">
                 <button class="menu-button" onclick="goToPage(7)">MESSAGE</button>
                 <button class="menu-button" onclick="goToPage(8)">GALLERY</button>
@@ -664,28 +619,20 @@
 
         <!-- Page 7: Special Message -->
         <div class="page" id="Page7">
-            
             <h2>SPECIAL MESSAGE</h2>
-            
-            <img class="love-logo" src="image/love logo.png" alt="Love">
-            
+            <img class="love-logo" src="image/love logo.png" alt="Love" loading="lazy">
             <div class="message-box">
                 <h2 id="app2"></h2>
             </div>
-            
             <button class="menu-button" onclick="goToPage(6)" style="min-width: 120px;">MENU</button>
         </div>
 
         <!-- Page 8: Gallery -->
         <div class="page" id="Page8">
             <h2>GALLERY OF RISMAYRA</h2>
-            
-            <img class="love-logo" src="image/love logo.png" alt="Love">
-            
+            <img class="love-logo" src="image/love logo.png" alt="Love" loading="lazy">
             <div class="message-box">
-                <img class="gallery-img" src="image/img1.jpg" 
-                     alt="Gallery Photo" id="galleryPhoto">
-                
+                <img class="gallery-img" src="image/img1.jpg" alt="Gallery Photo" id="galleryPhoto" loading="lazy">
                 <div class="gallery-controls">
                     <button class="menu-button" onclick="previousPhoto()" style="width: 80px;">◀</button>
                     <p id="photoCounter">1/10</p>
@@ -699,15 +646,14 @@
         <div class="page" id="Page9">
             <div class="message-box">
                 <h3 id="spotify-track-title">Birthday Playlist</h3>
-
-                <!-- Spotify Player with loading state -->
-                <div id="spotify-player-container" style="margin: 20px 0; position: relative;">
+                
+                <!-- Spotify Player Container -->
+                <div id="spotify-container" style="margin: 20px 0;">
                     <div id="spotify-loading" class="spotify-loading">
                         <div style="width: 50px; height: 50px; border: 5px solid #f3f3f3; border-top: 5px solid #ff4081; border-radius: 50%; animation: spin 1s linear infinite;"></div>
-                        <p>Loading music player...</p>
+                        <p>Loading music...</p>
                     </div>
-                    <div id="spotify-player" style="display: none;"></div>
-                    <div id="play-overlay" class="play-overlay" style="display: none;">🎵 CLICK TO PLAY MUSIC 🎵</div>
+                    <div id="spotify-player"></div>
                 </div>
 
                 <!-- Navigation buttons -->
@@ -722,38 +668,21 @@
         <!-- Page 10: Mini Games -->
         <div class="page" id="Page10">
             <h2>MINI GAMES</h2>
-            
-            <img class="love-logo" src="image/love logo.png" alt="Love">
-            
+            <img class="love-logo" src="image/love logo.png" alt="Love" loading="lazy">
             <div class="games-container">
-                <button class="game-button-small" onclick="openGame('https://he-is-talha.github.io/html-css-javascript-games/06-Tower-Blocks/')">
-                    🏗️ TOWER BLOCKS
-                </button>
-                <button class="game-button-small" onclick="openGame('https://he-is-talha.github.io/html-css-javascript-games/02-Archery-Game/')">
-                    🎯 ARCHERY
-                </button>
-                <button class="game-button-small" onclick="openGame('https://he-is-talha.github.io/html-css-javascript-games/07-Ping-Pong-Game/')">
-                    🏓 PING PONG
-                </button>
-                <button class="game-button-small" onclick="openGame('https://he-is-talha.github.io/html-css-javascript-games/10-Memory-Card-Game/')">
-                    🃏 MEMORY CARD
-                </button>
-                <button class="game-button-small" onclick="openGame('https://he-is-talha.github.io/html-css-javascript-games/13-Tic-Tac-Toe/')">
-                    ❌ TIC TAC TOE
-                </button>
-                <button class="game-button-small" onclick="openGame('https://www.akinator.com/')">
-                    🤔 DO I KNOW U?
-                </button>
+                <button class="game-button-small" onclick="openGame('https://he-is-talha.github.io/html-css-javascript-games/06-Tower-Blocks/')">🏗️ TOWER BLOCKS</button>
+                <button class="game-button-small" onclick="openGame('https://he-is-talha.github.io/html-css-javascript-games/02-Archery-Game/')">🎯 ARCHERY</button>
+                <button class="game-button-small" onclick="openGame('https://he-is-talha.github.io/html-css-javascript-games/07-Ping-Pong-Game/')">🏓 PING PONG</button>
+                <button class="game-button-small" onclick="openGame('https://he-is-talha.github.io/html-css-javascript-games/10-Memory-Card-Game/')">🃏 MEMORY CARD</button>
+                <button class="game-button-small" onclick="openGame('https://he-is-talha.github.io/html-css-javascript-games/13-Tic-Tac-Toe/')">❌ TIC TAC TOE</button>
+                <button class="game-button-small" onclick="openGame('https://www.akinator.com/')">🤔 DO I KNOW U?</button>
             </div>
             <button class="menu-button" onclick="goToPage(6)" style="min-width: 120px;">MENU</button>
         </div>
-
     </div>
     
     <!-- Page indicator dots -->
-    <div class="page-indicator" id="pageIndicator">
-        <!-- Dots will be generated by JavaScript -->
-    </div>
+    <div class="page-indicator" id="pageIndicator"></div>
 
 <script>
     // Current page state
@@ -778,31 +707,44 @@
         'img21.jpg', 'img22.jpg', 'img23.jpg', 'img24.jpg', 'img25.jpg'
     ];
 
-    // Spotify track URLs with autoplay parameter - IMPORTANT: Use track IDs, not playlist
+    // Spotify tracks - Using TRACK IDs only (not albums) for better autoplay
     const spotifyTracks = [
-        "https://open.spotify.com/embed/track/5QWla9cfBbKm3302u5sj87?utm_source=generator",
-        "https://open.spotify.com/embed/track/2gYj9lubBorOPIVWsTXugG?utm_source=generator",
-        "https://open.spotify.com/embed/track/5sdQOyqq2IDhvmx2lHOpwd?utm_source=generator",
-        "https://open.spotify.com/embed/track/0fK7ie6XwGxQTIkpFoWkd1?utm_source=generator",
-        "https://open.spotify.com/embed/track/0qdPpfbrgdBs6ie9bTtQ1d?utm_source=generator",
-        "https://open.spotify.com/embed/track/6W614n8yLUeS3zsZSeBwyq?utm_source=generator",
-        "https://open.spotify.com/embed/track/5mtTAScDytxMMqZj14NmlN?utm_source=generator",
-        "https://open.spotify.com/embed/track/70t7Q6AYG6ZgTYmJWcnkUM?utm_source=generator"
-    ];
-
-    const trackTitles = [
-        "Happy Birthday",
-        "After Like",
-        "Super Shy",
-        "Like Jennie",
-        "Rebel Heart",
-        "Blue",
-        "Love",
-        "I Am"
+        {
+            title: "Happy Birthday",
+            embedUrl: "https://open.spotify.com/embed/track/5QWla9cfBbKm3302u5sj87?utm_source=generator&autoplay=1"
+        },
+        {
+            title: "After Like",
+            embedUrl: "https://open.spotify.com/embed/track/2gYj9lubBorOPIVWsTXugG?utm_source=generator&autoplay=1"
+        },
+        {
+            title: "Super Shy",
+            embedUrl: "https://open.spotify.com/embed/track/5sdQOyqq2IDhvmx2lHOpwd?utm_source=generator&autoplay=1"
+        },
+        {
+            title: "Like Jennie",
+            embedUrl: "https://open.spotify.com/embed/track/0fK7ie6XwGxQTIkpFoWkd1?utm_source=generator&autoplay=1"
+        },
+        {
+            title: "Rebel Heart",
+            embedUrl: "https://open.spotify.com/embed/track/0qdPpfbrgdBs6ie9bTtQ1d?utm_source=generator&autoplay=1"
+        },
+        {
+            title: "Blue",
+            embedUrl: "https://open.spotify.com/embed/track/6W614n8yLUeS3zsZSeBwyq?utm_source=generator&autoplay=1"
+        },
+        {
+            title: "Love",
+            embedUrl: "https://open.spotify.com/embed/track/5mtTAScDytxMMqZj14NmlN?utm_source=generator&autoplay=1"
+        },
+        {
+            title: "I Am",
+            embedUrl: "https://open.spotify.com/embed/track/70t7Q6AYG6ZgTYmJWcnkUM?utm_source=generator&autoplay=1"
+        }
     ];
 
     let currentTrack = 0;
-    let spotifyPlayerReady = false;
+    let userInteracted = false;
     
     // Loading bar variables
     let loadingProgress = 0;
@@ -824,42 +766,34 @@
         
         // Initialize typewriter for Page 1
         initializeTypewriter1();
-
-        // Preload images
-        preloadImages();
+        
+        // Mark user interaction when they click/tap anywhere
+        document.body.addEventListener('click', function() {
+            userInteracted = true;
+        }, { once: true });
+        
+        // Preload next page images
+        setTimeout(preloadImages, 1000);
     });
 
-    // Preload all images
+    // Preload images for better performance
     function preloadImages() {
         console.log("Preloading images...");
+        const imagesToPreload = [
+            'image/img3.jpg', 'image/img4.jpg', 'image/img5.jpg',
+            'image/love logo.png', 'image/anime-style-clouds.jpg'
+        ];
         
-        // Preload gallery images
-        photoPaths.forEach(path => {
+        imagesToPreload.forEach(src => {
             const img = new Image();
-            img.src = `image/${path}`;
-            img.onload = () => console.log(`Preloaded: ${path}`);
+            img.src = src;
         });
-
-        // Preload side images
-        const sideImages = ['img1.jpg', 'img2.jpg'];
-        sideImages.forEach(path => {
-            const img = new Image();
-            img.src = `image/${path}`;
-        });
-
-        // Preload love logo
-        const logo = new Image();
-        logo.src = 'image/love logo.png';
-        
-        console.log("Image preloading started");
     }
     
     // Function to navigate between pages
     function goToPage(pageNumber) {
-        // Don't do anything if we're already on this page
         if (pageNumber === currentPage) return;
     
-        // Get current and next page elements
         const currentPageElem = document.getElementById(`Page${currentPage}`);
         const nextPageElem = document.getElementById(`Page${pageNumber}`);
     
@@ -881,21 +815,16 @@
     
         // Special actions for certain pages
         if (pageNumber === 5) {
-            // Start loading animation on page 5
             startLoadingAnimation();
         }
     
         if (pageNumber === 6) {
-            // Stop loading animation if coming from page 5
             stopLoadingAnimation();
-        
-            // Animate menu buttons
             setTimeout(() => {
                 animateMenuButtons();
             }, 300);
         }
     
-        // Initialize typewriter when Page 7 becomes active
         if (pageNumber === 7 && !typewriter2Initialized) {
             setTimeout(() => {
                 initializeTypewriter2();
@@ -908,12 +837,11 @@
             // Show loading indicator
             document.getElementById('spotify-loading').style.display = 'flex';
             document.getElementById('spotify-player').style.display = 'none';
-            document.getElementById('play-overlay').style.display = 'none';
             
-            // Load Spotify track with delay
+            // Delay to ensure page transition is visible
             setTimeout(() => {
                 loadSpotifyTrack(currentTrack);
-            }, 500);
+            }, 300);
         }
     }
     
@@ -922,7 +850,6 @@
         const playerContainer = document.getElementById('spotify-player');
         const loadingElement = document.getElementById('spotify-loading');
         const trackTitle = document.getElementById('spotify-track-title');
-        const playOverlay = document.getElementById('play-overlay');
 
         if (!playerContainer) return;
 
@@ -930,16 +857,15 @@
 
         // Update track title
         if (trackTitle) {
-            trackTitle.textContent = trackTitles[index];
+            trackTitle.textContent = spotifyTracks[index].title;
         }
 
         // Clear container
         playerContainer.innerHTML = '';
 
-        // Create iframe WITHOUT autoplay initially
+        // Create iframe with autoplay
         const iframe = document.createElement('iframe');
-        iframe.id = 'spotify-iframe';
-        iframe.src = spotifyTracks[index]; // No autoplay parameter initially
+        iframe.src = spotifyTracks[index].embedUrl;
         iframe.width = "100%";
         iframe.height = "352";
         iframe.frameBorder = "0";
@@ -951,73 +877,48 @@
 
         playerContainer.appendChild(iframe);
 
-        // Hide loading, show player and play overlay
-        setTimeout(() => {
-            loadingElement.style.display = 'none';
-            playerContainer.style.display = 'block';
-            playOverlay.style.display = 'block';
-            
-            // Add click event to play overlay
-            playOverlay.onclick = function() {
-                playSpotifyTrack();
-                playOverlay.style.display = 'none';
-            };
-        }, 1000);
-    }
-
-    // Function to play Spotify track (with user interaction)
-    function playSpotifyTrack() {
-        const iframe = document.getElementById('spotify-iframe');
-        if (!iframe) return;
-
-        // Reload iframe with autoplay parameter
-        const currentSrc = iframe.src;
-        if (!currentSrc.includes('autoplay=1')) {
-            iframe.src = currentSrc + (currentSrc.includes('?') ? '&' : '?') + 'autoplay=1';
-        }
-        
-        spotifyPlayerReady = true;
+        // Hide loading and show player after iframe loads
+        iframe.onload = function() {
+            setTimeout(() => {
+                loadingElement.style.display = 'none';
+                playerContainer.style.display = 'block';
+                
+                // Force autoplay by reloading the iframe with autoplay parameter
+                // This is a workaround for browsers that block initial autoplay
+                if (userInteracted) {
+                    setTimeout(() => {
+                        iframe.src = iframe.src.replace('autoplay=1', 'autoplay=0') + '&autoplay=1';
+                    }, 500);
+                }
+            }, 500);
+        };
     }
 
     // Function to navigate to next track with autoplay
     function nextSpotifyTrack() {
-        // Calculate next track index
         const nextTrack = (currentTrack + 1) % spotifyTracks.length;
         
         // Show loading
         document.getElementById('spotify-loading').style.display = 'flex';
         document.getElementById('spotify-player').style.display = 'none';
-        document.getElementById('play-overlay').style.display = 'none';
         
-        // Load next track
+        // Small delay for smooth transition
         setTimeout(() => {
             loadSpotifyTrack(nextTrack);
-            
-            // If player was already playing, autoplay the next track
-            if (spotifyPlayerReady) {
-                setTimeout(playSpotifyTrack, 1500);
-            }
         }, 300);
     }
 
     // Function to navigate to previous track with autoplay
     function previousSpotifyTrack() {
-        // Calculate previous track index
         const prevTrack = (currentTrack - 1 + spotifyTracks.length) % spotifyTracks.length;
         
         // Show loading
         document.getElementById('spotify-loading').style.display = 'flex';
         document.getElementById('spotify-player').style.display = 'none';
-        document.getElementById('play-overlay').style.display = 'none';
         
-        // Load previous track
+        // Small delay for smooth transition
         setTimeout(() => {
             loadSpotifyTrack(prevTrack);
-            
-            // If player was already playing, autoplay the previous track
-            if (spotifyPlayerReady) {
-                setTimeout(playSpotifyTrack, 1500);
-            }
         }, 300);
     }
 
@@ -1043,11 +944,7 @@
         const dots = document.querySelectorAll('.page-dot');
         dots.forEach(dot => {
             const pageNum = parseInt(dot.getAttribute('data-page'));
-            if (pageNum === currentPage) {
-                dot.classList.add('active');
-            } else {
-                dot.classList.remove('active');
-            }
+            dot.classList.toggle('active', pageNum === currentPage);
         });
     }
     
@@ -1055,21 +952,16 @@
     function setupButtonGame() {
         const yesButton = document.getElementById('yesButton');
         const noButton = document.getElementById('noButton');
-        const dangerZone = document.getElementById('dangerZone');
         
-        // YES button click - go to page 5
         yesButton.addEventListener('click', function() {
             goToPage(5);
         });
         
-        // NO button click - it moves away, so we don't want a click action
         noButton.addEventListener('click', function(e) {
             e.preventDefault();
-            // Move the button away when clicked
             moveNoButton();
         });
         
-        // Set up danger zone around NO button
         updateDangerZone();
     }
     
@@ -1077,7 +969,6 @@
     function setupMouseTracking() {
         const gameContainer = document.getElementById('buttonGame');
         const noButton = document.getElementById('noButton');
-        const dangerZone = document.getElementById('dangerZone');
         
         if (!gameContainer || !noButton) return;
         
@@ -1086,17 +977,14 @@
             const mouseX = e.clientX - rect.left;
             const mouseY = e.clientY - rect.top;
             
-            // Get NO button position
             const buttonRect = noButton.getBoundingClientRect();
             const buttonX = buttonRect.left - rect.left + buttonRect.width / 2;
             const buttonY = buttonRect.top - rect.top + buttonRect.height / 2;
             
-            // Calculate distance between mouse and button
             const distance = Math.sqrt(
                 Math.pow(mouseX - buttonX, 2) + Math.pow(mouseY - buttonY, 2)
             );
             
-            // If mouse is within 100px of button, move it away
             if (distance < 50 && noButtonMoves < maxMoves) {
                 moveNoButton();
                 updateDangerZone();
@@ -1114,40 +1002,27 @@
         const containerWidth = gameContainer.clientWidth - noButton.clientWidth;
         const containerHeight = gameContainer.clientHeight - noButton.clientHeight;
         
-        // Calculate random position within container
         const randomX = Math.random() * containerWidth;
         const randomY = Math.random() * containerHeight;
         
-        // Move button with animation
         noButton.style.transition = 'all 0.3s ease';
         noButton.style.left = `${randomX}px`;
         noButton.style.top = `${randomY}px`;
         
-        // Increase move count
         noButtonMoves++;
         
-        // Update button text after a few moves
-        if (noButtonMoves === 5) {
-            noButton.textContent = "Stop trying!";
-        } else if (noButtonMoves === 50) {
-            noButton.textContent = "Just click YES!";
-        } else if (noButtonMoves === 100) {
-            noButton.textContent = "HEYYYY!!";
-        } else if (noButtonMoves === 150) {
-            noButton.textContent = "Why are you trying??";
-        } else if (noButtonMoves === 200) {
-            noButton.textContent = "UGHHH!!!";
-        } else if (noButtonMoves === 250) {
-            noButton.textContent = "STOPP!!";
-        } else if (noButtonMoves === 300) {
-            noButton.textContent = "Please just click YES ;(";
-        } else if (noButtonMoves === 350) {
-            noButton.textContent = "PLEASEEEEEE";
-        } else if (noButtonMoves === 400) {
-            noButton.textContent = "OK fine...";
-        } else if (noButtonMoves >= maxMoves) {
+        // Update button text
+        if (noButtonMoves === 5) noButton.textContent = "Stop trying!";
+        else if (noButtonMoves === 50) noButton.textContent = "Just click YES!";
+        else if (noButtonMoves === 100) noButton.textContent = "HEYYYY!!";
+        else if (noButtonMoves === 150) noButton.textContent = "Why are you trying??";
+        else if (noButtonMoves === 200) noButton.textContent = "UGHHH!!!";
+        else if (noButtonMoves === 250) noButton.textContent = "STOPP!!";
+        else if (noButtonMoves === 300) noButton.textContent = "Please just click YES ;(";
+        else if (noButtonMoves === 350) noButton.textContent = "PLEASEEEEEE";
+        else if (noButtonMoves === 400) noButton.textContent = "OK fine...";
+        else if (noButtonMoves >= maxMoves) {
             noButton.textContent = "I give up!";
-            // After max moves, make NO button clickable to go to page 5 too
             noButton.addEventListener('click', function() {
                 goToPage(5);
             }, {once: true});
@@ -1161,13 +1036,11 @@
         
         if (!dangerZone || !noButton) return;
         
-        // Position danger zone around NO button
         dangerZone.style.width = '200px';
         dangerZone.style.height = '200px';
         dangerZone.style.left = `${noButton.offsetLeft - 50}px`;
         dangerZone.style.top = `${noButton.offsetTop - 50}px`;
         
-        // Show danger zone briefly
         dangerZone.classList.add('active');
         setTimeout(() => {
             dangerZone.classList.remove('active');
@@ -1181,11 +1054,9 @@
         
         if (!loadingProgressBar) return;
         
-        // Reset loading
         loadingProgress = 0;
         loadingProgressBar.style.width = '0%';
         
-        // Start loading interval
         loadingInterval = setInterval(() => {
             loadingProgress += 1;
             loadingProgressBar.style.width = `${loadingProgress}%`;
@@ -1194,14 +1065,13 @@
                 loadingPercent.textContent = `${loadingProgress}%`;
             }
             
-            // When loading reaches 100%, go to page 6
             if (loadingProgress >= 100) {
                 clearInterval(loadingInterval);
                 setTimeout(() => {
                     goToPage(6);
                 }, 500);
             }
-        }, 30); // 30ms = 3 seconds total
+        }, 30);
     }
     
     // Stop loading animation
@@ -1249,21 +1119,15 @@
 
     // Function to initialize the second typewriter
     function initializeTypewriter2() {
-        console.log('initializeTypewriter2 called');
         const app2 = document.getElementById('app2');
     
         if (app2) {
-            console.log('Found #app2 element, initializing typewriter...');
-
-            // Clear any existing content
             app2.innerHTML = '';
         
-            // Initialize the typewriter
             const typewriterInstance2 = new Typewriter(app2, {
                 delay: 50,
             });
         
-            // Start typing
             typewriterInstance2
                 .typeString('Dear Rismayra,<br><br>')
                 .pauseFor(200)
@@ -1276,17 +1140,13 @@
                 .typeString('Happy Birthday my love! ❤️')
                 .pauseFor(300)
                 .start()
-        } else {
-            console.error('Element #app2 not found');
         }
     }
 
     // Function to initialize the first typewriter
     function initializeTypewriter1() {
-        console.log('Initializing first typewriter...');
         var app = document.getElementById('app')
         if (app) {
-            console.log('Found #app element');
             var typewriterInstance = new Typewriter(app, {
                 loop: true,
                 delay: 75,
@@ -1301,23 +1161,17 @@
                 .typeString('I hope u like this!')
                 .pauseFor(500)
                 .start();
-        } else {
-            console.error('Element #app not found');
         }
     }
 
     // Function to open game in new tab
     function openGame(url) {
-        // Open the game in a new tab
         window.open(url, '_blank', 'noopener,noreferrer');
-    
-        // Optional: Show a message or animation
         showGameNotification();
     }
 
     // Optional: Show a notification when game opens
     function showGameNotification() {
-        // Create a notification element
         const notification = document.createElement('div');
         notification.style.position = 'fixed';
         notification.style.top = '20px';
@@ -1334,10 +1188,8 @@
         notification.style.fontWeight = 'bold';
         notification.textContent = '🎮 Game opening in new tab!';
     
-        // Add to page
         document.body.appendChild(notification);
     
-        // Remove after 3 seconds
         setTimeout(() => {
             notification.style.opacity = '0';
             notification.style.transition = 'opacity 0.5s';
@@ -1356,8 +1208,32 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+        img[loading="lazy"] {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        img[loading="lazy"].loaded {
+            opacity: 1;
+        }
     `;
     document.head.appendChild(style);
+
+    // Lazy load images
+    document.addEventListener('DOMContentLoaded', function() {
+        const lazyImages = document.querySelectorAll('img[loading="lazy"]');
+        
+        const imageObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    img.classList.add('loaded');
+                    observer.unobserve(img);
+                }
+            });
+        });
+        
+        lazyImages.forEach(img => imageObserver.observe(img));
+    });
 </script>
 
 </body>
