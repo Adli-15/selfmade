@@ -1,0 +1,530 @@
+<script>
+    // Current page state
+    let currentPage = 1;
+    const totalPages = 10;
+    
+    // Game variables for Page 1
+    let noButtonMoves = 0;
+    const maxMoves = 500;
+
+    // Typewriter2 initialization flag
+    let typewriter2Initialized = false;
+    
+    // Gallery variables
+    let currentPhoto = 1;
+    const totalPhotos = 23;
+    const photoPaths = [
+        'img1.jpg', 'img2.jpg', 'img3.jpg', 'img4.jpg', 'img5.jpg',
+        'img6.jpg', 'img7.jpg', 'img8.jpg', 'img9.jpg', 'img10.jpg',
+        'img11.jpg', 'img12.jpg', 'img13.jpg', 'img14.jpg', 'img15.jpg',
+        'img16.jpg', 'img17.jpg', 'img18.jpg', 'img19.jpg', 'img20.jpg',
+        'img21.jpg', 'img22.jpg', 'img23.jpg', 'img24.jpg', 'img25.jpg'
+    ];
+
+    // Array of Spotify track/playlist embeds with autoplay enabled
+    const spotifyTracks = [
+        {
+            title: "Happy Birthday",
+            embedUrl: "https://open.spotify.com/embed/track/5QWla9cfBbKm3302u5sj87?utm_source=generator&autoplay=1"
+        },
+        {
+            title: "Don't Copy My Flow",
+            embedUrl: "https://open.spotify.com/embed/album/3uxZV2XyunoLM15AMYl4au?utm_source=generator&autoplay=1"
+        },
+        {
+            title: "After Like",
+            embedUrl: "https://open.spotify.com/embed/track/2gYj9lubBorOPIVWsTXugG?utm_source=generator&autoplay=1"
+        },
+        {
+            title: "Super Shy",
+            embedUrl: "https://open.spotify.com/embed/track/5sdQOyqq2IDhvmx2lHOpwd?utm_source=generator&autoplay=1"
+        },
+        {
+            title: "Like Jennie",
+            embedUrl: "https://open.spotify.com/embed/track/0fK7ie6XwGxQTIkpFoWkd1?utm_source=generator&autoplay=1"
+        },
+        {
+            title: "Rebel Heart",
+            embedUrl: "https://open.spotify.com/embed/track/0qdPpfbrgdBs6ie9bTtQ1d?utm_source=generator&autoplay=1"
+        },
+        {
+            title: "Blue",
+            embedUrl: "https://open.spotify.com/embed/track/6W614n8yLUeS3zsZSeBwyq?utm_source=generator&autoplay=1"
+        },
+        {
+            title: "Love",
+            embedUrl: "https://open.spotify.com/embed/track/5mtTAScDytxMMqZj14NmlN?utm_source=generator&autoplay=1"
+        },
+        {
+            title: "I Am",
+            embedUrl: "https://open.spotify.com/embed/track/70t7Q6AYG6ZgTYmJWcnkUM?utm_source=generator&autoplay=1"
+        },
+        {
+            title: "Datanglah Sang Puteri",
+            embedUrl: "https://open.spotify.com/embed/track/5mtTAScDytxMMqZj14NmlN?utm_source=generator&autoplay=1"
+        }
+    ];
+
+    let currentTrack = 0;
+    let spotifyLoaded = false;
+    let spotifyIframe = null;
+    
+    // Loading bar variables
+    let loadingProgress = 0;
+    let loadingInterval;
+    
+    // Initialize the website
+    document.addEventListener('DOMContentLoaded', function() {
+        // Create page indicator dots
+        createPageIndicator();
+        
+        // Initialize the button game on Page 1
+        setupButtonGame();
+        
+        // Initialize gallery
+        updateGallery();
+        
+        // Set up mouse tracking for NO button
+        setupMouseTracking();
+        
+        // Initialize typewriter for Page 1
+        initializeTypewriter1();
+    });
+    
+    // Function to navigate between pages
+    function goToPage(pageNumber) {
+        // Don't do anything if we're already on this page
+        if (pageNumber === currentPage) return;
+    
+        // Get current and next page elements
+        const currentPageElem = document.getElementById(`Page${currentPage}`);
+        const nextPageElem = document.getElementById(`Page${pageNumber}`);
+    
+        if (!currentPageElem || !nextPageElem) return;
+    
+        // Mark current page as previous
+        currentPageElem.classList.remove('active');
+        currentPageElem.classList.add('previous');
+    
+        // Show next page
+        nextPageElem.classList.remove('previous');
+        nextPageElem.classList.add('active');
+    
+        // Update current page
+        currentPage = pageNumber;
+    
+        // Update page indicator
+        updatePageIndicator();
+    
+        // Special actions for certain pages
+        if (pageNumber === 5) {
+            // Start loading animation on page 5
+            startLoadingAnimation();
+        }
+    
+        if (pageNumber === 6) {
+            // Stop loading animation if coming from page 5
+            stopLoadingAnimation();
+        
+            // Animate menu buttons
+            setTimeout(() => {
+                animateMenuButtons();
+            }, 300);
+        }
+    
+        // Initialize typewriter when Page 7 becomes active
+        if (pageNumber === 7 && !typewriter2Initialized) {
+            setTimeout(() => {
+                initializeTypewriter2();
+                typewriter2Initialized = true;
+            }, 100);
+        }
+
+        // Load Spotify player when Page 9 becomes active
+        if (pageNumber === 9) {
+            setTimeout(() => {
+                // Autoplay the current track (first track on first visit)
+                loadSpotifyTrack(currentTrack);
+                spotifyLoaded = true;
+            }, 100);
+        }
+    }
+    
+    // Function to load Spotify player with autoplay
+    function loadSpotifyTrack(index) {
+        const playerContainer = document.getElementById('spotify-player');
+        const trackTitle = document.getElementById('spotify-track-title');
+    
+        if (!playerContainer) return;
+    
+        currentTrack = index;
+    
+        // Update track title
+        if (trackTitle) {
+            trackTitle.textContent = spotifyTracks[index].title;
+        }
+    
+        // Clear existing content
+        playerContainer.innerHTML = '';
+    
+        // Create iframe with autoplay
+        spotifyIframe = document.createElement('iframe');
+        spotifyIframe.src = spotifyTracks[index].embedUrl;
+        spotifyIframe.width = "100%";
+        spotifyIframe.height = "352";
+        spotifyIframe.frameBorder = "0";
+        spotifyIframe.allowFullscreen = "";
+        spotifyIframe.allow = "autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture";
+        spotifyIframe.loading = "lazy";
+        spotifyIframe.style.borderRadius = "12px";
+        spotifyIframe.style.border = "none";
+    
+        playerContainer.appendChild(spotifyIframe);
+    }
+
+    // Function to navigate to next track with autoplay
+    function nextSpotifyTrack() {
+        // Calculate next track index (loop back to first if at the end)
+        const nextTrack = (currentTrack + 1) % spotifyTracks.length;
+        
+        // Load and autoplay the next track
+        loadSpotifyTrack(nextTrack);
+    }
+
+    // Function to navigate to previous track with autoplay
+    function previousSpotifyTrack() {
+        // Calculate previous track index (loop to last if at the beginning)
+        const prevTrack = (currentTrack - 1 + spotifyTracks.length) % spotifyTracks.length;
+        
+        // Load and autoplay the previous track
+        loadSpotifyTrack(prevTrack);
+    }
+
+    // Create page indicator dots
+    function createPageIndicator() {
+        const indicator = document.getElementById('pageIndicator');
+        indicator.innerHTML = '';
+        
+        for (let i = 1; i <= totalPages; i++) {
+            const dot = document.createElement('div');
+            dot.className = 'page-dot';
+            if (i === 1) dot.classList.add('active');
+            dot.setAttribute('data-page', i);
+            dot.addEventListener('click', function() {
+                goToPage(i);
+            });
+            indicator.appendChild(dot);
+        }
+    }
+    
+    // Update page indicator
+    function updatePageIndicator() {
+        const dots = document.querySelectorAll('.page-dot');
+        dots.forEach(dot => {
+            const pageNum = parseInt(dot.getAttribute('data-page'));
+            if (pageNum === currentPage) {
+                dot.classList.add('active');
+            } else {
+                dot.classList.remove('active');
+            }
+        });
+    }
+    
+    // Setup the interactive button game on Page 1
+    function setupButtonGame() {
+        const yesButton = document.getElementById('yesButton');
+        const noButton = document.getElementById('noButton');
+        const dangerZone = document.getElementById('dangerZone');
+        
+        // YES button click - go to page 5
+        yesButton.addEventListener('click', function() {
+            goToPage(5);
+        });
+        
+        // NO button click - it moves away, so we don't want a click action
+        noButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            // Move the button away when clicked
+            moveNoButton();
+        });
+        
+        // Set up danger zone around NO button
+        updateDangerZone();
+    }
+    
+    // Set up mouse tracking for NO button
+    function setupMouseTracking() {
+        const gameContainer = document.getElementById('buttonGame');
+        const noButton = document.getElementById('noButton');
+        const dangerZone = document.getElementById('dangerZone');
+        
+        if (!gameContainer || !noButton) return;
+        
+        gameContainer.addEventListener('mousemove', function(e) {
+            const rect = gameContainer.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+            
+            // Get NO button position
+            const buttonRect = noButton.getBoundingClientRect();
+            const buttonX = buttonRect.left - rect.left + buttonRect.width / 2;
+            const buttonY = buttonRect.top - rect.top + buttonRect.height / 2;
+            
+            // Calculate distance between mouse and button
+            const distance = Math.sqrt(
+                Math.pow(mouseX - buttonX, 2) + Math.pow(mouseY - buttonY, 2)
+            );
+            
+            // If mouse is within 100px of button, move it away
+            if (distance < 50 && noButtonMoves < maxMoves) {
+                moveNoButton();
+                updateDangerZone();
+            }
+        });
+    }
+    
+    // Move NO button to random position
+    function moveNoButton() {
+        const gameContainer = document.getElementById('buttonGame');
+        const noButton = document.getElementById('noButton');
+        
+        if (!gameContainer || !noButton || noButtonMoves >= maxMoves) return;
+        
+        const containerWidth = gameContainer.clientWidth - noButton.clientWidth;
+        const containerHeight = gameContainer.clientHeight - noButton.clientHeight;
+        
+        // Calculate random position within container
+        const randomX = Math.random() * containerWidth;
+        const randomY = Math.random() * containerHeight;
+        
+        // Move button with animation
+        noButton.style.transition = 'all 0.3s ease';
+        noButton.style.left = `${randomX}px`;
+        noButton.style.top = `${randomY}px`;
+        
+        // Increase move count
+        noButtonMoves++;
+        
+        // Update button text after a few moves
+        if (noButtonMoves === 5) {
+            noButton.textContent = "Stop trying!";
+        } else if (noButtonMoves === 50) {
+            noButton.textContent = "Just click YES!";
+        } else if (noButtonMoves === 100) {
+            noButton.textContent = "HEYYYY!!";
+        } else if (noButtonMoves === 150) {
+            noButton.textContent = "Why are you trying??";
+        } else if (noButtonMoves === 200) {
+            noButton.textContent = "UGHHH!!!";
+        } else if (noButtonMoves === 250) {
+            noButton.textContent = "STOPP!!";
+        } else if (noButtonMoves === 300) {
+            noButton.textContent = "Please just click YES ;(";
+        } else if (noButtonMoves === 350) {
+            noButton.textContent = "PLEASEEEEEE";
+        } else if (noButtonMoves === 400) {
+            noButton.textContent = "OK fine...";
+        } else if (noButtonMoves >= maxMoves) {
+            noButton.textContent = "I give up!";
+            // After max moves, make NO button clickable to go to page 5 too
+            noButton.addEventListener('click', function() {
+                goToPage(5);
+            }, {once: true});
+        }
+    }
+    
+    // Update danger zone visualization
+    function updateDangerZone() {
+        const dangerZone = document.getElementById('dangerZone');
+        const noButton = document.getElementById('noButton');
+        
+        if (!dangerZone || !noButton) return;
+        
+        // Position danger zone around NO button
+        dangerZone.style.width = '200px';
+        dangerZone.style.height = '200px';
+        dangerZone.style.left = `${noButton.offsetLeft - 50}px`;
+        dangerZone.style.top = `${noButton.offsetTop - 50}px`;
+        
+        // Show danger zone briefly
+        dangerZone.classList.add('active');
+        setTimeout(() => {
+            dangerZone.classList.remove('active');
+        }, 1000);
+    }
+    
+    // Start loading animation on Page 5
+    function startLoadingAnimation() {
+        const loadingProgressBar = document.getElementById('loadingProgress');
+        const loadingPercent = document.getElementById('loadingPercent');
+        
+        if (!loadingProgressBar) return;
+        
+        // Reset loading
+        loadingProgress = 0;
+        loadingProgressBar.style.width = '0%';
+        
+        // Start loading interval
+        loadingInterval = setInterval(() => {
+            loadingProgress += 1;
+            loadingProgressBar.style.width = `${loadingProgress}%`;
+            
+            if (loadingPercent) {
+                loadingPercent.textContent = `${loadingProgress}%`;
+            }
+            
+            // When loading reaches 100%, go to page 6
+            if (loadingProgress >= 100) {
+                clearInterval(loadingInterval);
+                setTimeout(() => {
+                    goToPage(6);
+                }, 500);
+            }
+        }, 30); // 30ms = 3 seconds total
+    }
+    
+    // Stop loading animation
+    function stopLoadingAnimation() {
+        if (loadingInterval) {
+            clearInterval(loadingInterval);
+        }
+    }
+    
+    // Gallery functions
+    function updateGallery() {
+        const photoIndex = currentPhoto - 1;
+        const photoPath = `C:\\Users\\Adli\\Desktop\\interactive website\\selfmade\\image\\${photoPaths[photoIndex]}`;
+        const galleryPhoto = document.getElementById('galleryPhoto');
+        if (galleryPhoto) {
+            galleryPhoto.src = photoPath;
+            document.getElementById('photoCounter').textContent = `${currentPhoto}/${totalPhotos}`;
+        }
+    }
+    
+    function nextPhoto() {
+        currentPhoto = currentPhoto < totalPhotos ? currentPhoto + 1 : 1;
+        updateGallery();
+    }
+    
+    function previousPhoto() {
+        currentPhoto = currentPhoto > 1 ? currentPhoto - 1 : totalPhotos;
+        updateGallery();
+    }
+    
+    // Animate menu buttons on Page 6
+    function animateMenuButtons() {
+        const menuButtons = document.querySelectorAll('.menu-button');
+        menuButtons.forEach((button, index) => {
+            button.style.transform = 'translateY(20px)';
+            button.style.opacity = '0';
+            
+            setTimeout(() => {
+                button.style.transition = 'all 0.5s ease';
+                button.style.transform = 'translateY(0)';
+                button.style.opacity = '1';
+            }, index * 100);
+        });
+    }
+
+    // Function to initialize the second typewriter
+    function initializeTypewriter2() {
+        console.log('initializeTypewriter2 called');
+        const app2 = document.getElementById('app2');
+    
+        if (app2) {
+            console.log('Found #app2 element, initializing typewriter...');
+
+            // Clear any existing content
+            app2.innerHTML = '';
+        
+            // Initialize the typewriter
+            const typewriterInstance2 = new Typewriter(app2, {
+                delay: 50,
+            });
+        
+            // Start typing
+            typewriterInstance2
+                .typeString('Dear Rismayra,<br><br>')
+                .pauseFor(200)
+                .typeString('On your special day, I wish you a life filled with happiness, laughter, and love.<br><br>')
+                .pauseFor(200)
+                .typeString('May all your dreams come true and may you always be surrounded by people who cherish you.<br><br>')
+                .pauseFor(200)
+                .typeString("I'll always be your #1 supporter and cheers u from behind. I wish that you'd be a tough person on your journey aheads.<br><br>")
+                .pauseFor(200)
+                .typeString('Happy Birthday my love! ❤️')
+                .pauseFor(300)
+                .start()
+        } else {
+            console.error('Element #app2 not found');
+        }
+    }
+
+    // Function to initialize the first typewriter
+    function initializeTypewriter1() {
+        console.log('Initializing first typewriter...');
+        var app = document.getElementById('app')
+        if (app) {
+            console.log('Found #app element');
+            var typewriterInstance = new Typewriter(app, {
+                loop: true,
+                delay: 75,
+            });
+            typewriterInstance
+                .typeString('Helloooo Rismayraaa ^_^')
+                .pauseFor(300)
+                .deleteChars(23)
+                .typeString('I make this website special just for you..')
+                .pauseFor(300)
+                .deleteChars(43)
+                .typeString('I hope u like this!')
+                .pauseFor(500)
+                .start();
+        } else {
+            console.error('Element #app not found');
+        }
+    }
+
+    // Function to open game in new tab
+    function openGame(url) {
+        // Open the game in a new tab
+        window.open(url, '_blank', 'noopener,noreferrer');
+    
+        // Optional: Show a message or animation
+        showGameNotification();
+    }
+
+    // Optional: Show a notification when game opens
+    function showGameNotification() {
+        // Create a notification element
+        const notification = document.createElement('div');
+        notification.style.position = 'fixed';
+        notification.style.top = '20px';
+        notification.style.left = '50%';
+        notification.style.transform = 'translateX(-50%)';
+        notification.style.background = 'linear-gradient(45deg, #ff4081, #f50057)';
+        notification.style.color = 'white';
+        notification.style.padding = '15px 25px';
+        notification.style.borderRadius = '50px';
+        notification.style.boxShadow = '0 5px 15px rgba(255, 64, 129, 0.5)';
+        notification.style.zIndex = '1000';
+        notification.style.fontFamily = "'Playfair Display', serif";
+        notification.style.fontSize = '16px';
+        notification.style.fontWeight = 'bold';
+        notification.textContent = '🎮 Game opening in new tab!';
+    
+        // Add to page
+        document.body.appendChild(notification);
+    
+        // Remove after 3 seconds
+        setTimeout(() => {
+            notification.style.opacity = '0';
+            notification.style.transition = 'opacity 0.5s';
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 500);
+        }, 3000);
+    }
+</script>

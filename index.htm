@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Happy Birthday Rismayra</title>
+    <link rel="icon" type="image/x-icon" href="C:\Users\Adli\Desktop\interactive website\selfmade\image\love logo.ico">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+
+    <script src="https://unpkg.com/typewriter-effect@latest/dist/core.js"></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Dancing+Script:wght@700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #ffd6e0;
+            font-family: 'Playfair Display', serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Side image containers (outside the main content) */
+        .side-container {
+            position: fixed;
+            top: 0;
+            height: 100vh;
+            width: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+
+        .left-side {
+            left: 50px;
+        }
+
+        .right-side {
+            right: 50px;
+        }
+
+        .side-image {
+            width: 270px;
+            height: 270px;
+            object-fit: cover;
+            border-radius: 15px;
+            border: 5px solid #ff4081;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            margin-bottom: 15px;
+            transition: transform 0.5s ease;
+        }
+
+        .side-image:hover {
+            transform: scale(1.15);
+        }
+
+        .side-name {
+            font-size: 20px;
+            color: #ad1457;
+            font-weight: bold;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 8px 15px;
+            border-radius: 10px;
+            border: 2px solid #ff4081;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            max-width: 360px;
+        }
+
+        /* Container for all pages */
+        .pages-container {
+            position: relative;
+            width: 450px;
+            height: 615px;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        /* Individual pages */
+        .page {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("C:/Users/Adli/Desktop/interactive website/selfmade/anime-style-clouds.jpg");
+            background-size: cover;
+            background-position: center;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        /* Active page */
+        .page.active {
+            opacity: 1;
+            transform: translateX(0);
+            z-index: 10;
+        }
+
+        /* Previous page */
+        .page.previous {
+            opacity: 0;
+            transform: translateX(-100%);
+            z-index: 5;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin: 10px 0;
+            color: #c2185b;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            font-size: 20px;
+            margin: 8px 0;
+            color: #880e4f;
+            font-weight: 700;
+        }
+
+        p {
+            font-size: 18px;
+            margin: 10px 0;
+            color: #444;
+        }
+
+        .name-header {
+            position: absolute;
+            top: 15px;
+            left: 0;
+            right: 0;
+            font-size: 18px;
+            color: #ad1457;
+            font-weight: bold;
+        }
+
+        .name-footer {
+            position: absolute;
+            bottom: 15px;
+            left: 0;
+            right: 0;
+            font-size: 18px;
+            color: #ad1457;
+            font-weight: bold;
+        }
+
+        .frame-container {
+            display: flex;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .frame-img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 4px solid #ff4081;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Button styles for Page 1-4 */
+        .button-game-container {
+            position: relative;
+            width: 450px;
+            height: 400px;
+            margin: 20px 0;
+        }
+
+        .game-button {
+            position: absolute;
+            background: linear-gradient(45deg, #ff4081, #f50057);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 50px;
+            font-family: 'Playfair Display', serif;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.5s ease;
+            box-shadow: 0 5px 15px rgba(255, 64, 129, 0.4);
+            min-width: 80px;
+            letter-spacing: 1px;
+            z-index: 10;
+        }
+
+        .game-button:hover {
+            background: linear-gradient(45deg, #f50057, #c51162);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(197, 17, 98, 0.6);
+        }
+
+        #yesButton {
+            top: 50%;
+            left: 30%;
+            transform: translate(-50%, -50%);
+        }
+
+        #noButton {
+            top: 50%;
+            left: 70%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(45deg, #8e24aa, #6a1b9a);
+        }
+
+        #noButton:hover {
+            background: linear-gradient(45deg, #6a1b9a, #4a148c);
+        }
+
+        /* Danger zone around NO button */
+        
+
+        .danger-zone.active {
+            opacity: 1;
+        }
+
+        /* Loading page styles */
+        .loading-container {
+            margin: 25px 0;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            border: 4px solid #ff4081;
+            width: 80%;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .loading-bar-container {
+            width: 100%;
+            height: 20px;
+            background: rgba(255, 64, 129, 0.2);
+            border-radius: 10px;
+            border: 2px solid #ff4081;
+            margin: 20px 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .loading-progress {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #ff4081, #ff80ab);
+            border-radius: 10px;
+            transition: width 0.1s linear;
+        }
+
+        /* Menu styles */
+        .menu-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 25px 0;
+            width: 90%;
+        }
+
+        .menu-button {
+            background: linear-gradient(45deg, #ff4081, #f50057);
+            color: white;
+            border: none;
+            padding: 15px 10px;
+            text-align: center;
+            border-radius: 10px;
+            font-family: 'Playfair Display', serif;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 64, 129, 0.4);
+            min-height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .menu-button:hover {
+            background: linear-gradient(45deg, #f50057, #c51162);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(197, 17, 98, 0.6);
+        }
+
+        .message-box {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 15px;
+            border: 4px solid #ff4081;
+            margin: 20px 0;
+            width: 90%;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .message-box h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 36px;
+            color: #d81b60;
+            margin: 10px 0;
+        }
+
+        .message-box h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            font-weight: normal;
+            text-align: left;
+            line-height: 1.0;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-left: 5px solid #ff4081;
+            margin: 10px auto;
+            max-width: 400px;
+            min-height: 250px;
+            white-space: normal;
+        }
+
+        .gallery-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .gallery-img {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 15px;
+            border: 4px solid #ff4081;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .music-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 0;
+        }
+
+        .music-controls button {
+            background: linear-gradient(45deg, #ff4081, #f50057);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 64, 129, 0.4);
+        }
+
+        .games-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 25px 0;
+            width: 95%;
+        }
+
+        .game-button-small {
+            background: linear-gradient(45deg, #ff4081, #f50057);
+            color: white;
+            border: none;
+            padding: 15px 5px;
+            text-align: center;
+            border-radius: 10px;
+            font-family: 'Playfair Display', serif;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 64, 129, 0.4);
+            min-height: 60px;
+        }
+
+        .love-logo {
+            width: 60px;
+            height: 60px;
+            margin: 15px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* Typing animation */
+
+        #app{
+            border-right: 4px solid #ff4081;
+            margin: 0 auto;
+            width: fit-content;
+        }
+
+        #app2{
+            border-right: 4px solid #ff4081;
+            margin: 0 auto;
+            width: fit-content;
+        }
+
+        .typing-animation {
+            overflow: hidden;
+            border-right: 3px solid #ff4081;
+            white-space: nowrap;
+            margin: 0 auto;
+            animation: typing 3.5s steps(30, end), blink-caret 0.75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: #ff4081; }
+        }
+
+        /* Page indicator */
+        .page-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 20px;
+        }
+
+        .page-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: rgba(255, 64, 129, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .page-dot.active {
+            background-color: #ff4081;
+            transform: scale(1.3);
+        }
+
+        /* Instructions */
+        .instructions {
+            position: absolute;
+            bottom: 60px;
+            color: #666;
+            font-size: 14px;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 5px 10px;
+            border-radius: 10px;
+        }
+
+        .text-border-romantic-static {
+            border: 4px solid;
+            border-image: linear-gradient(45deg, #ff4081, #f50057) 1;
+            border-radius: 20px;
+            padding: 20px;
+            margin: 15px 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 240, 245, 0.95));
+            box-shadow: 0 10px 30px rgba(255, 64, 129, 0.4);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .text-border-romantic-static::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: linear-gradient(45deg, transparent, rgba(255, 64, 129, 0.1), transparent);
+            z-index: -1;
+        }
+
+        .text-border-romantic {
+            border: 4px solid;
+            border-image: linear-gradient(45deg, #ff4081, #f50057) 1;
+            border-radius: 20px;
+            padding: 6px;
+            margin: 25px 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 240, 245, 0.95));
+            box-shadow: 0 10px 30px rgba(255, 64, 129, 0.4);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .text-border-romantic::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: linear-gradient(45deg, transparent, rgba(255, 64, 129, 0.1), transparent);
+            z-index: -1;
+        }
+
+        /* Add this to your existing CSS */
+        #spotify-player iframe {
+            transition: opacity 0.3s ease;
+        }
+
+        #spotify-player {
+            min-height: 352px; /* Prevent layout shift */
+        }   
+
+    </style>
+</head>
+
+<body>
+    <!-- Left side image and name -->
+    <div class="side-container left-side">
+        <img class="side-image" id="leftImage" src="C:\Users\Adli\Desktop\interactive website\selfmade\image\img1.jpg" alt="The Prettiest Girl">
+        <div class="side-name">  NUR RISMAYRA HAYREEN</div>
+    </div>
+
+    <!-- Right side image and name -->
+    <div class="side-container right-side">
+        <img class="side-image" id="rightImage" src="C:\Users\Adli\Desktop\interactive website\selfmade\image\img2.jpg" alt="My Sweet Princess">
+        <div class="side-name">NUR RISMAYRA HAYREEN</div>
+    </div>
+
+    <!-- Container for all pages -->
+    <div class="pages-container" id="pagesContainer">
+        
+        <!-- Page 1-4 Combined: Interactive Button Game -->
+        <div class="page active" id="Page1">
+
+            <div class="text-border-romantic">
+                <h2 id="app"></h2>
+            </div>
+
+            <div class="text-border-romantic">
+                <h2>Are you ready?</h2>
+            </div>
+
+            <div class="button-game-container" id="buttonGame">
+                <div class="danger-zone" id="dangerZone"></div>
+                <button class="game-button" id="yesButton">YES</button>
+                <button class="game-button" id="noButton">NO</button>
+            </div>
+        </div>
+
+        <!-- Page 5: Loading Page -->
+        <div class="page" id="Page5">
+            <div class="text-border-romantic-static">
+                <h2>HIII BEFDAYY GIRLL</h2>
+            </div>
+            
+            <img class="love-logo" src="C:\Users\Adli\Desktop\interactive website\selfmade\image\love logo.png" alt="Love">
+            
+            <div class="loading-container">
+                <p>Loading your special surprise...</p>
+                <div class="loading-bar-container">
+                    <div class="loading-progress" id="loadingProgress"></div>
+                </div>
+                <p id="loadingPercent">0%</p>
+                <h2>SMILE!</h2>
+            </div>
+        </div>
+
+        <!-- Page 6: Main Menu -->
+        <div class="page" id="Page6">
+            <div class="message-box">
+                <h1>HAPPY</h1>
+                <h1>BIRTHDAY!</h1>
+                <p>PRESS A BUTTON</p>
+            </div>
+            
+            <img class="love-logo" src="C:\Users\Adli\Desktop\interactive website\selfmade\image\love logo.png" alt="Love">
+            
+            <div class="menu-container">
+                <button class="menu-button" onclick="goToPage(7)">MESSAGE</button>
+                <button class="menu-button" onclick="goToPage(8)">GALLERY</button>
+                <button class="menu-button" onclick="goToPage(9)">MUSIC</button>
+                <button class="menu-button" onclick="goToPage(10)">MINI GAMES</button>
+            </div>
+        </div>
+
+        <!-- Page 7: Special Message -->
+        <div class="page" id="Page7">
+            
+            <h2>SPECIAL MESSAGE</h2>
+            
+            <img class="love-logo" src="C:\Users\Adli\Desktop\interactive website\selfmade\image\love logo.png" alt="Love">
+            
+            <div class="message-box">
+                <h2 id="app2"></h2>
+            </div>
+            
+            <button class="menu-button" onclick="goToPage(6)" style="min-width: 120px;">MENU</button>
+        </div>
+
+        <!-- Page 8: Gallery -->
+        <div class="page" id="Page8">
+            <h2>GALLERY OF RISMAYRA</h2>
+            
+            <img class="love-logo" src="C:\Users\Adli\Desktop\interactive website\selfmade\image\love logo.png" alt="Love">
+            
+            <div class="message-box">
+                <img class="gallery-img" src="C:\Users\Adli\Desktop\interactive website\selfmade\image\img1.jpg" 
+                     alt="Gallery Photo" id="galleryPhoto">
+                
+                <div class="gallery-controls">
+                    <button class="menu-button" onclick="previousPhoto()" style="width: 80px;">◀</button>
+                    <p id="photoCounter">1/10</p>
+                    <button class="menu-button" onclick="nextPhoto()" style="width: 80px;">▶</button>
+                </div>
+            </div>
+            <button class="menu-button" onclick="goToPage(6)" style="min-width: 120px;">MENU</button>
+        </div>
+
+        <!-- Page 9: Music -->
+        <div class="page" id="Page9">
+            <div class="message-box">
+                <h3 id="spotify-track-title">Birthday Playlist</h3>
+
+                <!-- Spotify Player -->
+                <div id="spotify-player" style="margin: 20px 0;">
+                    <!-- Player will be inserted here by JavaScript -->
+                </div>
+
+                <!-- Navigation buttons -->
+                <div class="music-controls" style="margin-top: 15px;">
+                    <button onclick="previousSpotifyTrack()">⏮</button>
+                    <button class="menu-button" onclick="goToPage(6)" style="min-width: 120px;">MENU</button>
+                    <button onclick="nextSpotifyTrack()">⏭</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 10: Mini Games -->
+        <div class="page" id="Page10">
+            <h2>MINI GAMES</h2>
+            
+            <img class="love-logo" src="C:\Users\Adli\Desktop\interactive website\selfmade\image\love logo.png" alt="Love">
+            
+            <div class="games-container">
+                <button class="game-button-small" onclick="openGame('https://he-is-talha.github.io/html-css-javascript-games/06-Tower-Blocks/')">
+                    🏗️ TOWER BLOCKS
+                </button>
+                <button class="game-button-small" onclick="openGame('https://he-is-talha.github.io/html-css-javascript-games/02-Archery-Game/')">
+                    🎯 ARCHERY
+                </button>
+                <button class="game-button-small" onclick="openGame('https://he-is-talha.github.io/html-css-javascript-games/07-Ping-Pong-Game/')">
+                    🏓 PING PONG
+                </button>
+                <button class="game-button-small" onclick="openGame('https://he-is-talha.github.io/html-css-javascript-games/10-Memory-Card-Game/')">
+                    🃏 MEMORY CARD
+                </button>
+                <button class="game-button-small" onclick="openGame('https://he-is-talha.github.io/html-css-javascript-games/13-Tic-Tac-Toe/')">
+                    ❌ TIC TAC TOE
+                </button>
+                <button class="game-button-small" onclick="openGame('https://www.akinator.com/')">
+                    🤔 DO I KNOW U?
+                </button>
+            </div>
+            <button class="menu-button" onclick="goToPage(6)" style="min-width: 120px;">MENU</button>
+        </div>
+
+    </div>
+    
+    <!-- Page indicator dots -->
+    <div class="page-indicator" id="pageIndicator">
+        <!-- Dots will be generated by JavaScript -->
+    </div>
+
+<script>
+    // Current page state
+    let currentPage = 1;
+    const totalPages = 10;
+    
+    // Game variables for Page 1
+    let noButtonMoves = 0;
+    const maxMoves = 500;
+
+    // Typewriter2 initialization flag
+    let typewriter2Initialized = false;
+    
+    // Gallery variables
+    let currentPhoto = 1;
+    const totalPhotos = 23;
+    const photoPaths = [
+        'img1.jpg', 'img2.jpg', 'img3.jpg', 'img4.jpg', 'img5.jpg',
+        'img6.jpg', 'img7.jpg', 'img8.jpg', 'img9.jpg', 'img10.jpg',
+        'img11.jpg', 'img12.jpg', 'img13.jpg', 'img14.jpg', 'img15.jpg',
+        'img16.jpg', 'img17.jpg', 'img18.jpg', 'img19.jpg', 'img20.jpg',
+        'img21.jpg', 'img22.jpg', 'img23.jpg', 'img24.jpg', 'img25.jpg'
+    ];
+
+    // Spotify track URLs with autoplay parameter
+    const spotifyTracks = [
+        "https://open.spotify.com/embed/track/5QWla9cfBbKm3302u5sj87?utm_source=generator&autoplay=1",
+        "https://open.spotify.com/embed/album/3uxZV2XyunoLM15AMYl4au?utm_source=generator&autoplay=1",
+        "https://open.spotify.com/embed/track/2gYj9lubBorOPIVWsTXugG?utm_source=generator&autoplay=1",
+        "https://open.spotify.com/embed/track/5sdQOyqq2IDhvmx2lHOpwd?utm_source=generator&autoplay=1",
+        "https://open.spotify.com/embed/track/0fK7ie6XwGxQTIkpFoWkd1?utm_source=generator&autoplay=1",
+        "https://open.spotify.com/embed/track/0qdPpfbrgdBs6ie9bTtQ1d?utm_source=generator&autoplay=1",
+        "https://open.spotify.com/embed/track/6W614n8yLUeS3zsZSeBwyq?utm_source=generator&autoplay=1",
+        "https://open.spotify.com/embed/track/5mtTAScDytxMMqZj14NmlN?utm_source=generator&autoplay=1",
+        "https://open.spotify.com/embed/track/70t7Q6AYG6ZgTYmJWcnkUM?utm_source=generator&autoplay=1",
+        "https://open.spotify.com/embed/track/5mtTAScDytxMMqZj14NmlN?utm_source=generator&autoplay=1"
+    ];
+
+    const trackTitles = [
+        "Happy Birthday",
+        "Don't Copy My Flow",
+        "After Like",
+        "Super Shy",
+        "Like Jennie",
+        "Rebel Heart",
+        "Blue",
+        "Love",
+        "I Am",
+        "Datanglah Sang Puteri"
+    ];
+
+    let currentTrack = 0;
+    
+    // Loading bar variables
+    let loadingProgress = 0;
+    let loadingInterval;
+    
+    // Initialize the website
+    document.addEventListener('DOMContentLoaded', function() {
+        // Create page indicator dots
+        createPageIndicator();
+        
+        // Initialize the button game on Page 1
+        setupButtonGame();
+        
+        // Initialize gallery
+        updateGallery();
+        
+        // Set up mouse tracking for NO button
+        setupMouseTracking();
+        
+        // Initialize typewriter for Page 1
+        initializeTypewriter1();
+    });
+    
+    // Function to navigate between pages
+    function goToPage(pageNumber) {
+        // Don't do anything if we're already on this page
+        if (pageNumber === currentPage) return;
+    
+        // Get current and next page elements
+        const currentPageElem = document.getElementById(`Page${currentPage}`);
+        const nextPageElem = document.getElementById(`Page${pageNumber}`);
+    
+        if (!currentPageElem || !nextPageElem) return;
+    
+        // Mark current page as previous
+        currentPageElem.classList.remove('active');
+        currentPageElem.classList.add('previous');
+    
+        // Show next page
+        nextPageElem.classList.remove('previous');
+        nextPageElem.classList.add('active');
+    
+        // Update current page
+        currentPage = pageNumber;
+    
+        // Update page indicator
+        updatePageIndicator();
+    
+        // Special actions for certain pages
+        if (pageNumber === 5) {
+            // Start loading animation on page 5
+            startLoadingAnimation();
+        }
+    
+        if (pageNumber === 6) {
+            // Stop loading animation if coming from page 5
+            stopLoadingAnimation();
+        
+            // Animate menu buttons
+            setTimeout(() => {
+                animateMenuButtons();
+            }, 300);
+        }
+    
+        // Initialize typewriter when Page 7 becomes active
+        if (pageNumber === 7 && !typewriter2Initialized) {
+            setTimeout(() => {
+                initializeTypewriter2();
+                typewriter2Initialized = true;
+            }, 100);
+        }
+
+        // Load Spotify player when Page 9 becomes active
+        if (pageNumber === 9) {
+            // Small delay to ensure page transition is complete
+            setTimeout(() => {
+                loadSpotifyTrack(currentTrack);
+            }, 10);
+        }
+    }
+    
+    // Function to load Spotify player with autoplay
+    function loadSpotifyTrack(index) {
+        const playerContainer = document.getElementById('spotify-player');
+        const trackTitle = document.getElementById('spotify-track-title');
+
+        if (!playerContainer) return;
+
+        currentTrack = index;
+
+        // Update track title
+        if (trackTitle) {
+            trackTitle.textContent = trackTitles[index];
+        }
+
+        // Clear container
+        playerContainer.innerHTML = '';
+
+        // Create iframe with autoplay
+        const iframe = document.createElement('iframe');
+        iframe.src = spotifyTracks[index];
+        iframe.width = "100%";
+        iframe.height = "352";
+        iframe.frameBorder = "0";
+        iframe.allowFullscreen = "";
+        iframe.allow = "autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture";
+        iframe.loading = "lazy";
+        iframe.style.borderRadius = "12px";
+        iframe.style.border = "none";
+
+        playerContainer.appendChild(iframe);
+    }
+
+    // Function to navigate to next track with autoplay
+    function nextSpotifyTrack() {
+        // Calculate next track index (loop back to first if at the end)
+        const nextTrack = (currentTrack + 1) % spotifyTracks.length;
+        
+        // Load and autoplay the next track
+        loadSpotifyTrack(nextTrack);
+    }
+
+    // Function to navigate to previous track with autoplay
+    function previousSpotifyTrack() {
+        // Calculate previous track index (loop to last if at the beginning)
+        const prevTrack = (currentTrack - 1 + spotifyTracks.length) % spotifyTracks.length;
+        
+        // Load and autoplay the previous track
+        loadSpotifyTrack(prevTrack);
+    }
+
+    // Create page indicator dots
+    function createPageIndicator() {
+        const indicator = document.getElementById('pageIndicator');
+        indicator.innerHTML = '';
+        
+        for (let i = 1; i <= totalPages; i++) {
+            const dot = document.createElement('div');
+            dot.className = 'page-dot';
+            if (i === 1) dot.classList.add('active');
+            dot.setAttribute('data-page', i);
+            dot.addEventListener('click', function() {
+                goToPage(i);
+            });
+            indicator.appendChild(dot);
+        }
+    }
+    
+    // Update page indicator
+    function updatePageIndicator() {
+        const dots = document.querySelectorAll('.page-dot');
+        dots.forEach(dot => {
+            const pageNum = parseInt(dot.getAttribute('data-page'));
+            if (pageNum === currentPage) {
+                dot.classList.add('active');
+            } else {
+                dot.classList.remove('active');
+            }
+        });
+    }
+    
+    // Setup the interactive button game on Page 1
+    function setupButtonGame() {
+        const yesButton = document.getElementById('yesButton');
+        const noButton = document.getElementById('noButton');
+        const dangerZone = document.getElementById('dangerZone');
+        
+        // YES button click - go to page 5
+        yesButton.addEventListener('click', function() {
+            goToPage(5);
+        });
+        
+        // NO button click - it moves away, so we don't want a click action
+        noButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            // Move the button away when clicked
+            moveNoButton();
+        });
+        
+        // Set up danger zone around NO button
+        updateDangerZone();
+    }
+    
+    // Set up mouse tracking for NO button
+    function setupMouseTracking() {
+        const gameContainer = document.getElementById('buttonGame');
+        const noButton = document.getElementById('noButton');
+        const dangerZone = document.getElementById('dangerZone');
+        
+        if (!gameContainer || !noButton) return;
+        
+        gameContainer.addEventListener('mousemove', function(e) {
+            const rect = gameContainer.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+            
+            // Get NO button position
+            const buttonRect = noButton.getBoundingClientRect();
+            const buttonX = buttonRect.left - rect.left + buttonRect.width / 2;
+            const buttonY = buttonRect.top - rect.top + buttonRect.height / 2;
+            
+            // Calculate distance between mouse and button
+            const distance = Math.sqrt(
+                Math.pow(mouseX - buttonX, 2) + Math.pow(mouseY - buttonY, 2)
+            );
+            
+            // If mouse is within 100px of button, move it away
+            if (distance < 50 && noButtonMoves < maxMoves) {
+                moveNoButton();
+                updateDangerZone();
+            }
+        });
+    }
+    
+    // Move NO button to random position
+    function moveNoButton() {
+        const gameContainer = document.getElementById('buttonGame');
+        const noButton = document.getElementById('noButton');
+        
+        if (!gameContainer || !noButton || noButtonMoves >= maxMoves) return;
+        
+        const containerWidth = gameContainer.clientWidth - noButton.clientWidth;
+        const containerHeight = gameContainer.clientHeight - noButton.clientHeight;
+        
+        // Calculate random position within container
+        const randomX = Math.random() * containerWidth;
+        const randomY = Math.random() * containerHeight;
+        
+        // Move button with animation
+        noButton.style.transition = 'all 0.3s ease';
+        noButton.style.left = `${randomX}px`;
+        noButton.style.top = `${randomY}px`;
+        
+        // Increase move count
+        noButtonMoves++;
+        
+        // Update button text after a few moves
+        if (noButtonMoves === 5) {
+            noButton.textContent = "Stop trying!";
+        } else if (noButtonMoves === 50) {
+            noButton.textContent = "Just click YES!";
+        } else if (noButtonMoves === 100) {
+            noButton.textContent = "HEYYYY!!";
+        } else if (noButtonMoves === 150) {
+            noButton.textContent = "Why are you trying??";
+        } else if (noButtonMoves === 200) {
+            noButton.textContent = "UGHHH!!!";
+        } else if (noButtonMoves === 250) {
+            noButton.textContent = "STOPP!!";
+        } else if (noButtonMoves === 300) {
+            noButton.textContent = "Please just click YES ;(";
+        } else if (noButtonMoves === 350) {
+            noButton.textContent = "PLEASEEEEEE";
+        } else if (noButtonMoves === 400) {
+            noButton.textContent = "OK fine...";
+        } else if (noButtonMoves >= maxMoves) {
+            noButton.textContent = "I give up!";
+            // After max moves, make NO button clickable to go to page 5 too
+            noButton.addEventListener('click', function() {
+                goToPage(5);
+            }, {once: true});
+        }
+    }
+    
+    // Update danger zone visualization
+    function updateDangerZone() {
+        const dangerZone = document.getElementById('dangerZone');
+        const noButton = document.getElementById('noButton');
+        
+        if (!dangerZone || !noButton) return;
+        
+        // Position danger zone around NO button
+        dangerZone.style.width = '200px';
+        dangerZone.style.height = '200px';
+        dangerZone.style.left = `${noButton.offsetLeft - 50}px`;
+        dangerZone.style.top = `${noButton.offsetTop - 50}px`;
+        
+        // Show danger zone briefly
+        dangerZone.classList.add('active');
+        setTimeout(() => {
+            dangerZone.classList.remove('active');
+        }, 1000);
+    }
+    
+    // Start loading animation on Page 5
+    function startLoadingAnimation() {
+        const loadingProgressBar = document.getElementById('loadingProgress');
+        const loadingPercent = document.getElementById('loadingPercent');
+        
+        if (!loadingProgressBar) return;
+        
+        // Reset loading
+        loadingProgress = 0;
+        loadingProgressBar.style.width = '0%';
+        
+        // Start loading interval
+        loadingInterval = setInterval(() => {
+            loadingProgress += 1;
+            loadingProgressBar.style.width = `${loadingProgress}%`;
+            
+            if (loadingPercent) {
+                loadingPercent.textContent = `${loadingProgress}%`;
+            }
+            
+            // When loading reaches 100%, go to page 6
+            if (loadingProgress >= 100) {
+                clearInterval(loadingInterval);
+                setTimeout(() => {
+                    goToPage(6);
+                }, 500);
+            }
+        }, 30); // 30ms = 3 seconds total
+    }
+    
+    // Stop loading animation
+    function stopLoadingAnimation() {
+        if (loadingInterval) {
+            clearInterval(loadingInterval);
+        }
+    }
+    
+    // Gallery functions
+    function updateGallery() {
+        const photoIndex = currentPhoto - 1;
+        const photoPath = `C:\\Users\\Adli\\Desktop\\interactive website\\selfmade\\image\\${photoPaths[photoIndex]}`;
+        const galleryPhoto = document.getElementById('galleryPhoto');
+        if (galleryPhoto) {
+            galleryPhoto.src = photoPath;
+            document.getElementById('photoCounter').textContent = `${currentPhoto}/${totalPhotos}`;
+        }
+    }
+    
+    function nextPhoto() {
+        currentPhoto = currentPhoto < totalPhotos ? currentPhoto + 1 : 1;
+        updateGallery();
+    }
+    
+    function previousPhoto() {
+        currentPhoto = currentPhoto > 1 ? currentPhoto - 1 : totalPhotos;
+        updateGallery();
+    }
+    
+    // Animate menu buttons on Page 6
+    function animateMenuButtons() {
+        const menuButtons = document.querySelectorAll('.menu-button');
+        menuButtons.forEach((button, index) => {
+            button.style.transform = 'translateY(20px)';
+            button.style.opacity = '0';
+            
+            setTimeout(() => {
+                button.style.transition = 'all 0.5s ease';
+                button.style.transform = 'translateY(0)';
+                button.style.opacity = '1';
+            }, index * 100);
+        });
+    }
+
+    // Function to initialize the second typewriter
+    function initializeTypewriter2() {
+        console.log('initializeTypewriter2 called');
+        const app2 = document.getElementById('app2');
+    
+        if (app2) {
+            console.log('Found #app2 element, initializing typewriter...');
+
+            // Clear any existing content
+            app2.innerHTML = '';
+        
+            // Initialize the typewriter
+            const typewriterInstance2 = new Typewriter(app2, {
+                delay: 50,
+            });
+        
+            // Start typing
+            typewriterInstance2
+                .typeString('Dear Rismayra,<br><br>')
+                .pauseFor(200)
+                .typeString('On your special day, I wish you a life filled with happiness, laughter, and love.<br><br>')
+                .pauseFor(200)
+                .typeString('May all your dreams come true and may you always be surrounded by people who cherish you.<br><br>')
+                .pauseFor(200)
+                .typeString("I'll always be your #1 supporter and cheers u from behind. I wish that you'd be a tough person on your journey aheads.<br><br>")
+                .pauseFor(200)
+                .typeString('Happy Birthday my love! ❤️')
+                .pauseFor(300)
+                .start()
+        } else {
+            console.error('Element #app2 not found');
+        }
+    }
+
+    // Function to initialize the first typewriter
+    function initializeTypewriter1() {
+        console.log('Initializing first typewriter...');
+        var app = document.getElementById('app')
+        if (app) {
+            console.log('Found #app element');
+            var typewriterInstance = new Typewriter(app, {
+                loop: true,
+                delay: 75,
+            });
+            typewriterInstance
+                .typeString('Helloooo Rismayraaa ^_^')
+                .pauseFor(300)
+                .deleteChars(23)
+                .typeString('I make this website special just for you..')
+                .pauseFor(300)
+                .deleteChars(43)
+                .typeString('I hope u like this!')
+                .pauseFor(500)
+                .start();
+        } else {
+            console.error('Element #app not found');
+        }
+    }
+
+    // Function to open game in new tab
+    function openGame(url) {
+        // Open the game in a new tab
+        window.open(url, '_blank', 'noopener,noreferrer');
+    
+        // Optional: Show a message or animation
+        showGameNotification();
+    }
+
+    // Optional: Show a notification when game opens
+    function showGameNotification() {
+        // Create a notification element
+        const notification = document.createElement('div');
+        notification.style.position = 'fixed';
+        notification.style.top = '20px';
+        notification.style.left = '50%';
+        notification.style.transform = 'translateX(-50%)';
+        notification.style.background = 'linear-gradient(45deg, #ff4081, #f50057)';
+        notification.style.color = 'white';
+        notification.style.padding = '15px 25px';
+        notification.style.borderRadius = '50px';
+        notification.style.boxShadow = '0 5px 15px rgba(255, 64, 129, 0.5)';
+        notification.style.zIndex = '1000';
+        notification.style.fontFamily = "'Playfair Display', serif";
+        notification.style.fontSize = '16px';
+        notification.style.fontWeight = 'bold';
+        notification.textContent = '🎮 Game opening in new tab!';
+    
+        // Add to page
+        document.body.appendChild(notification);
+    
+        // Remove after 3 seconds
+        setTimeout(() => {
+            notification.style.opacity = '0';
+            notification.style.transition = 'opacity 0.5s';
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 500);
+        }, 3000);
+    }
+</script>
+
+</body>
+</html>
