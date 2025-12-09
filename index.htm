@@ -140,6 +140,13 @@
             font-weight: 700;
         }
 
+        h3 {
+            font-size: 18px;
+            margin: 10px 0;
+            color: #ad1457;
+            font-weight: bold;
+        }
+
         p {
             font-size: 18px;
             margin: 10px 0;
@@ -235,7 +242,14 @@
         }
 
         /* Danger zone around NO button */
-        
+        .danger-zone {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,0,0,0.2) 0%, transparent 70%);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
 
         .danger-zone.active {
             opacity: 1;
@@ -363,7 +377,8 @@
             display: flex;
             justify-content: center;
             gap: 15px;
-            margin: 0;
+            margin: 20px 0;
+            align-items: center;
         }
 
         .music-controls button {
@@ -377,6 +392,9 @@
             font-size: 20px;
             cursor: pointer;
             box-shadow: 0 5px 15px rgba(255, 64, 129, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .games-container {
@@ -416,7 +434,6 @@
         }
 
         /* Typing animation */
-
         #app{
             border-right: 4px solid #ff4081;
             margin: 0 auto;
@@ -530,25 +547,30 @@
 
         /* Spotify player styles */
         #spotify-player {
-            transition: opacity 0.3s ease;
-            min-height: 352px;
-        }
-
-        .spotify-loading {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 352px;
-            background: rgba(255, 255, 255, 0.9);
+            width: 100%;
             border-radius: 12px;
-            border: 2px dashed #ff4081;
+            overflow: hidden;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: opacity 0.3s ease;
         }
 
-        .spotify-loading p {
-            margin-top: 15px;
-            color: #ff4081;
+        .spotify-hidden {
+            display: none;
+        }
+
+        /* Track info styles */
+        .track-info {
+            margin: 10px 0;
+            font-size: 16px;
+            color: #ad1457;
             font-weight: bold;
+        }
+
+        .track-counter {
+            margin: 10px 0;
+            font-size: 14px;
+            color: #666;
         }
 
     </style>
@@ -645,21 +667,16 @@
         <!-- Page 9: Music -->
         <div class="page" id="Page9">
             <div class="message-box">
-                <h3 id="spotify-track-title">Birthday Playlist</h3>
+                <h3 id="spotify-track-title">🎵 Happy Birthday 🎵</h3>
+                <p class="track-counter" id="trackCounter">Track 1 of 8</p>
                 
                 <!-- Spotify Player Container -->
-                <div id="spotify-container" style="margin: 20px 0;">
-                    <div id="spotify-loading" class="spotify-loading">
-                        <div style="width: 50px; height: 50px; border: 5px solid #f3f3f3; border-top: 5px solid #ff4081; border-radius: 50%; animation: spin 1s linear infinite;"></div>
-                        <p>Loading music...</p>
-                    </div>
-                    <div id="spotify-player"></div>
-                </div>
+                <div id="spotify-player"></div>
 
                 <!-- Navigation buttons -->
-                <div class="music-controls" style="margin-top: 15px;">
+                <div class="music-controls">
                     <button onclick="previousSpotifyTrack()">⏮</button>
-                    <button class="menu-button" onclick="goToPage(6)" style="min-width: 120px;">MENU</button>
+                    <button class="menu-button" onclick="goToPage(6)" style="min-width: 120px; border-radius: 10px; height: 60px;">MENU</button>
                     <button onclick="nextSpotifyTrack()">⏭</button>
                 </div>
             </div>
@@ -707,44 +724,44 @@
         'img21.jpg', 'img22.jpg', 'img23.jpg', 'img24.jpg', 'img25.jpg'
     ];
 
-    // Spotify tracks - Using TRACK IDs only (not albums) for better autoplay
+    // Spotify tracks with embedded player URLs
     const spotifyTracks = [
         {
             title: "Happy Birthday",
-            embedUrl: "https://open.spotify.com/embed/track/5QWla9cfBbKm3302u5sj87?utm_source=generator&autoplay=1"
+            embedUrl: "https://open.spotify.com/embed/track/5QWla9cfBbKm3302u5sj87?utm_source=generator"
         },
         {
-            title: "After Like",
-            embedUrl: "https://open.spotify.com/embed/track/2gYj9lubBorOPIVWsTXugG?utm_source=generator&autoplay=1"
+            title: "After Like - IVE",
+            embedUrl: "https://open.spotify.com/embed/track/2gYj9lubBorOPIVWsTXugG?utm_source=generator"
         },
         {
-            title: "Super Shy",
-            embedUrl: "https://open.spotify.com/embed/track/5sdQOyqq2IDhvmx2lHOpwd?utm_source=generator&autoplay=1"
+            title: "Super Shy - NewJeans",
+            embedUrl: "https://open.spotify.com/embed/track/5sdQOyqq2IDhvmx2lHOpwd?utm_source=generator"
         },
         {
-            title: "Like Jennie",
-            embedUrl: "https://open.spotify.com/embed/track/0fK7ie6XwGxQTIkpFoWkd1?utm_source=generator&autoplay=1"
+            title: "Like Jennie - KAROL G",
+            embedUrl: "https://open.spotify.com/embed/track/0fK7ie6XwGxQTIkpFoWkd1?utm_source=generator"
         },
         {
-            title: "Rebel Heart",
-            embedUrl: "https://open.spotify.com/embed/track/0qdPpfbrgdBs6ie9bTtQ1d?utm_source=generator&autoplay=1"
+            title: "Rebel Heart - FIRST LOVE",
+            embedUrl: "https://open.spotify.com/embed/track/0qdPpfbrgdBs6ie9bTtQ1d?utm_source=generator"
         },
         {
-            title: "Blue",
-            embedUrl: "https://open.spotify.com/embed/track/6W614n8yLUeS3zsZSeBwyq?utm_source=generator&autoplay=1"
+            title: "Blue - TROYE SIVAN",
+            embedUrl: "https://open.spotify.com/embed/track/6W614n8yLUeS3zsZSeBwyq?utm_source=generator"
         },
         {
-            title: "Love",
-            embedUrl: "https://open.spotify.com/embed/track/5mtTAScDytxMMqZj14NmlN?utm_source=generator&autoplay=1"
+            title: "Love - Keyshia Cole",
+            embedUrl: "https://open.spotify.com/embed/track/5mtTAScDytxMMqZj14NmlN?utm_source=generator"
         },
         {
-            title: "I Am",
-            embedUrl: "https://open.spotify.com/embed/track/70t7Q6AYG6ZgTYmJWcnkUM?utm_source=generator&autoplay=1"
+            title: "I Am - IVE",
+            embedUrl: "https://open.spotify.com/embed/track/70t7Q6AYG6ZgTYmJWcnkUM?utm_source=generator"
         }
     ];
 
     let currentTrack = 0;
-    let userInteracted = false;
+    let spotifyIframe = null;
     
     // Loading bar variables
     let loadingProgress = 0;
@@ -767,14 +784,28 @@
         // Initialize typewriter for Page 1
         initializeTypewriter1();
         
-        // Mark user interaction when they click/tap anywhere
-        document.body.addEventListener('click', function() {
-            userInteracted = true;
-        }, { once: true });
-        
         // Preload next page images
         setTimeout(preloadImages, 1000);
+        
+        // Add click event to entire document for Spotify autoplay workaround
+        document.addEventListener('click', handleUserInteraction);
+        document.addEventListener('touchstart', handleUserInteraction);
     });
+
+    // Handle user interaction for Spotify autoplay
+    function handleUserInteraction() {
+        // This helps with autoplay policies
+        if (currentPage === 9 && spotifyIframe) {
+            // Try to play the current track if we're on the music page
+            setTimeout(() => {
+                loadSpotifyTrack(currentTrack);
+            }, 100);
+        }
+        
+        // Remove listeners after first interaction
+        document.removeEventListener('click', handleUserInteraction);
+        document.removeEventListener('touchstart', handleUserInteraction);
+    }
 
     // Preload images for better performance
     function preloadImages() {
@@ -834,11 +865,7 @@
 
         // Load Spotify player when Page 9 becomes active
         if (pageNumber === 9) {
-            // Show loading indicator
-            document.getElementById('spotify-loading').style.display = 'flex';
-            document.getElementById('spotify-player').style.display = 'none';
-            
-            // Delay to ensure page transition is visible
+            // Small delay to ensure smooth transition
             setTimeout(() => {
                 loadSpotifyTrack(currentTrack);
             }, 300);
@@ -848,16 +875,20 @@
     // Function to load Spotify player with autoplay
     function loadSpotifyTrack(index) {
         const playerContainer = document.getElementById('spotify-player');
-        const loadingElement = document.getElementById('spotify-loading');
         const trackTitle = document.getElementById('spotify-track-title');
+        const trackCounter = document.getElementById('trackCounter');
 
         if (!playerContainer) return;
 
         currentTrack = index;
 
-        // Update track title
+        // Update track title and counter
         if (trackTitle) {
-            trackTitle.textContent = spotifyTracks[index].title;
+            trackTitle.textContent = `🎵 ${spotifyTracks[index].title} 🎵`;
+        }
+        
+        if (trackCounter) {
+            trackCounter.textContent = `Track ${index + 1} of ${spotifyTracks.length}`;
         }
 
         // Clear container
@@ -865,7 +896,8 @@
 
         // Create iframe with autoplay
         const iframe = document.createElement('iframe');
-        iframe.src = spotifyTracks[index].embedUrl;
+        const embedUrl = spotifyTracks[index].embedUrl + '&autoplay=1';
+        iframe.src = embedUrl;
         iframe.width = "100%";
         iframe.height = "352";
         iframe.frameBorder = "0";
@@ -874,22 +906,18 @@
         iframe.loading = "lazy";
         iframe.style.borderRadius = "12px";
         iframe.style.border = "none";
+        iframe.style.minHeight = "352px";
 
         playerContainer.appendChild(iframe);
-
-        // Hide loading and show player after iframe loads
+        spotifyIframe = iframe;
+        
+        // Store the iframe reference for potential autoplay retry
         iframe.onload = function() {
+            console.log("Spotify iframe loaded");
+            // Try to trigger play with a small delay
             setTimeout(() => {
-                loadingElement.style.display = 'none';
-                playerContainer.style.display = 'block';
-                
-                // Force autoplay by reloading the iframe with autoplay parameter
-                // This is a workaround for browsers that block initial autoplay
-                if (userInteracted) {
-                    setTimeout(() => {
-                        iframe.src = iframe.src.replace('autoplay=1', 'autoplay=0') + '&autoplay=1';
-                    }, 500);
-                }
+                // This helps with autoplay in some browsers
+                iframe.contentWindow.postMessage('play', '*');
             }, 500);
         };
     }
@@ -897,29 +925,13 @@
     // Function to navigate to next track with autoplay
     function nextSpotifyTrack() {
         const nextTrack = (currentTrack + 1) % spotifyTracks.length;
-        
-        // Show loading
-        document.getElementById('spotify-loading').style.display = 'flex';
-        document.getElementById('spotify-player').style.display = 'none';
-        
-        // Small delay for smooth transition
-        setTimeout(() => {
-            loadSpotifyTrack(nextTrack);
-        }, 300);
+        loadSpotifyTrack(nextTrack);
     }
 
     // Function to navigate to previous track with autoplay
     function previousSpotifyTrack() {
         const prevTrack = (currentTrack - 1 + spotifyTracks.length) % spotifyTracks.length;
-        
-        // Show loading
-        document.getElementById('spotify-loading').style.display = 'flex';
-        document.getElementById('spotify-player').style.display = 'none';
-        
-        // Small delay for smooth transition
-        setTimeout(() => {
-            loadSpotifyTrack(prevTrack);
-        }, 300);
+        loadSpotifyTrack(prevTrack);
     }
 
     // Create page indicator dots
@@ -1200,23 +1212,6 @@
             }, 500);
         }, 3000);
     }
-
-    // Add spin animation for loading
-    const style = document.createElement('style');
-    style.textContent = `
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        img[loading="lazy"] {
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        img[loading="lazy"].loaded {
-            opacity: 1;
-        }
-    `;
-    document.head.appendChild(style);
 
     // Lazy load images
     document.addEventListener('DOMContentLoaded', function() {
