@@ -534,16 +534,69 @@
 
         #spotify-player {
             min-height: 352px; /* Prevent layout shift */
-        }   
+        }
+
+        /* Preloader for images */
+        .image-preloader {
+            position: absolute;
+            width: 0;
+            height: 0;
+            overflow: hidden;
+            opacity: 0;
+        }
+
+        /* Loading indicator for Spotify */
+        .spotify-loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 352px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            border: 2px dashed #ff4081;
+        }
+
+        .spotify-loading p {
+            margin-top: 15px;
+            color: #ff4081;
+            font-weight: bold;
+        }
+
+        /* Play button overlay */
+        .play-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 64, 129, 0.9);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 100;
+            box-shadow: 0 5px 20px rgba(255, 64, 129, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .play-overlay:hover {
+            background: rgba(255, 64, 129, 1);
+            transform: translate(-50%, -50%) scale(1.05);
+        }
 
     </style>
 </head>
 
 <body>
+    <!-- Image preloader (hidden) -->
+    <div class="image-preloader" id="imagePreloader"></div>
+
     <!-- Left side image and name -->
     <div class="side-container left-side">
         <img class="side-image" id="leftImage" src="image/img1.jpg" alt="The Prettiest Girl">
-        <div class="side-name">  NUR RISMAYRA HAYREEN</div>
+        <div class="side-name">NUR RISMAYRA HAYREEN</div>
     </div>
 
     <!-- Right side image and name -->
@@ -647,9 +700,14 @@
             <div class="message-box">
                 <h3 id="spotify-track-title">Birthday Playlist</h3>
 
-                <!-- Spotify Player -->
-                <div id="spotify-player" style="margin: 20px 0;">
-                    <!-- Player will be inserted here by JavaScript -->
+                <!-- Spotify Player with loading state -->
+                <div id="spotify-player-container" style="margin: 20px 0; position: relative;">
+                    <div id="spotify-loading" class="spotify-loading">
+                        <div style="width: 50px; height: 50px; border: 5px solid #f3f3f3; border-top: 5px solid #ff4081; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+                        <p>Loading music player...</p>
+                    </div>
+                    <div id="spotify-player" style="display: none;"></div>
+                    <div id="play-overlay" class="play-overlay" style="display: none;">🎵 CLICK TO PLAY MUSIC 🎵</div>
                 </div>
 
                 <!-- Navigation buttons -->
@@ -720,34 +778,31 @@
         'img21.jpg', 'img22.jpg', 'img23.jpg', 'img24.jpg', 'img25.jpg'
     ];
 
-    // Spotify track URLs with autoplay parameter
+    // Spotify track URLs with autoplay parameter - IMPORTANT: Use track IDs, not playlist
     const spotifyTracks = [
-        "https://open.spotify.com/embed/track/5QWla9cfBbKm3302u5sj87?utm_source=generator&autoplay=1",
-        "https://open.spotify.com/embed/album/3uxZV2XyunoLM15AMYl4au?utm_source=generator&autoplay=1",
-        "https://open.spotify.com/embed/track/2gYj9lubBorOPIVWsTXugG?utm_source=generator&autoplay=1",
-        "https://open.spotify.com/embed/track/5sdQOyqq2IDhvmx2lHOpwd?utm_source=generator&autoplay=1",
-        "https://open.spotify.com/embed/track/0fK7ie6XwGxQTIkpFoWkd1?utm_source=generator&autoplay=1",
-        "https://open.spotify.com/embed/track/0qdPpfbrgdBs6ie9bTtQ1d?utm_source=generator&autoplay=1",
-        "https://open.spotify.com/embed/track/6W614n8yLUeS3zsZSeBwyq?utm_source=generator&autoplay=1",
-        "https://open.spotify.com/embed/track/5mtTAScDytxMMqZj14NmlN?utm_source=generator&autoplay=1",
-        "https://open.spotify.com/embed/track/70t7Q6AYG6ZgTYmJWcnkUM?utm_source=generator&autoplay=1",
-        "https://open.spotify.com/embed/track/5mtTAScDytxMMqZj14NmlN?utm_source=generator&autoplay=1"
+        "https://open.spotify.com/embed/track/5QWla9cfBbKm3302u5sj87?utm_source=generator",
+        "https://open.spotify.com/embed/track/2gYj9lubBorOPIVWsTXugG?utm_source=generator",
+        "https://open.spotify.com/embed/track/5sdQOyqq2IDhvmx2lHOpwd?utm_source=generator",
+        "https://open.spotify.com/embed/track/0fK7ie6XwGxQTIkpFoWkd1?utm_source=generator",
+        "https://open.spotify.com/embed/track/0qdPpfbrgdBs6ie9bTtQ1d?utm_source=generator",
+        "https://open.spotify.com/embed/track/6W614n8yLUeS3zsZSeBwyq?utm_source=generator",
+        "https://open.spotify.com/embed/track/5mtTAScDytxMMqZj14NmlN?utm_source=generator",
+        "https://open.spotify.com/embed/track/70t7Q6AYG6ZgTYmJWcnkUM?utm_source=generator"
     ];
 
     const trackTitles = [
         "Happy Birthday",
-        "Don't Copy My Flow",
         "After Like",
         "Super Shy",
         "Like Jennie",
         "Rebel Heart",
         "Blue",
         "Love",
-        "I Am",
-        "Datanglah Sang Puteri"
+        "I Am"
     ];
 
     let currentTrack = 0;
+    let spotifyPlayerReady = false;
     
     // Loading bar variables
     let loadingProgress = 0;
@@ -769,7 +824,35 @@
         
         // Initialize typewriter for Page 1
         initializeTypewriter1();
+
+        // Preload images
+        preloadImages();
     });
+
+    // Preload all images
+    function preloadImages() {
+        console.log("Preloading images...");
+        
+        // Preload gallery images
+        photoPaths.forEach(path => {
+            const img = new Image();
+            img.src = `image/${path}`;
+            img.onload = () => console.log(`Preloaded: ${path}`);
+        });
+
+        // Preload side images
+        const sideImages = ['img1.jpg', 'img2.jpg'];
+        sideImages.forEach(path => {
+            const img = new Image();
+            img.src = `image/${path}`;
+        });
+
+        // Preload love logo
+        const logo = new Image();
+        logo.src = 'image/love logo.png';
+        
+        console.log("Image preloading started");
+    }
     
     // Function to navigate between pages
     function goToPage(pageNumber) {
@@ -822,17 +905,24 @@
 
         // Load Spotify player when Page 9 becomes active
         if (pageNumber === 9) {
-            // Small delay to ensure page transition is complete
+            // Show loading indicator
+            document.getElementById('spotify-loading').style.display = 'flex';
+            document.getElementById('spotify-player').style.display = 'none';
+            document.getElementById('play-overlay').style.display = 'none';
+            
+            // Load Spotify track with delay
             setTimeout(() => {
                 loadSpotifyTrack(currentTrack);
-            }, 10);
+            }, 500);
         }
     }
     
     // Function to load Spotify player with autoplay
     function loadSpotifyTrack(index) {
         const playerContainer = document.getElementById('spotify-player');
+        const loadingElement = document.getElementById('spotify-loading');
         const trackTitle = document.getElementById('spotify-track-title');
+        const playOverlay = document.getElementById('play-overlay');
 
         if (!playerContainer) return;
 
@@ -846,9 +936,10 @@
         // Clear container
         playerContainer.innerHTML = '';
 
-        // Create iframe with autoplay
+        // Create iframe WITHOUT autoplay initially
         const iframe = document.createElement('iframe');
-        iframe.src = spotifyTracks[index];
+        iframe.id = 'spotify-iframe';
+        iframe.src = spotifyTracks[index]; // No autoplay parameter initially
         iframe.width = "100%";
         iframe.height = "352";
         iframe.frameBorder = "0";
@@ -859,24 +950,75 @@
         iframe.style.border = "none";
 
         playerContainer.appendChild(iframe);
+
+        // Hide loading, show player and play overlay
+        setTimeout(() => {
+            loadingElement.style.display = 'none';
+            playerContainer.style.display = 'block';
+            playOverlay.style.display = 'block';
+            
+            // Add click event to play overlay
+            playOverlay.onclick = function() {
+                playSpotifyTrack();
+                playOverlay.style.display = 'none';
+            };
+        }, 1000);
+    }
+
+    // Function to play Spotify track (with user interaction)
+    function playSpotifyTrack() {
+        const iframe = document.getElementById('spotify-iframe');
+        if (!iframe) return;
+
+        // Reload iframe with autoplay parameter
+        const currentSrc = iframe.src;
+        if (!currentSrc.includes('autoplay=1')) {
+            iframe.src = currentSrc + (currentSrc.includes('?') ? '&' : '?') + 'autoplay=1';
+        }
+        
+        spotifyPlayerReady = true;
     }
 
     // Function to navigate to next track with autoplay
     function nextSpotifyTrack() {
-        // Calculate next track index (loop back to first if at the end)
+        // Calculate next track index
         const nextTrack = (currentTrack + 1) % spotifyTracks.length;
         
-        // Load and autoplay the next track
-        loadSpotifyTrack(nextTrack);
+        // Show loading
+        document.getElementById('spotify-loading').style.display = 'flex';
+        document.getElementById('spotify-player').style.display = 'none';
+        document.getElementById('play-overlay').style.display = 'none';
+        
+        // Load next track
+        setTimeout(() => {
+            loadSpotifyTrack(nextTrack);
+            
+            // If player was already playing, autoplay the next track
+            if (spotifyPlayerReady) {
+                setTimeout(playSpotifyTrack, 1500);
+            }
+        }, 300);
     }
 
     // Function to navigate to previous track with autoplay
     function previousSpotifyTrack() {
-        // Calculate previous track index (loop to last if at the beginning)
+        // Calculate previous track index
         const prevTrack = (currentTrack - 1 + spotifyTracks.length) % spotifyTracks.length;
         
-        // Load and autoplay the previous track
-        loadSpotifyTrack(prevTrack);
+        // Show loading
+        document.getElementById('spotify-loading').style.display = 'flex';
+        document.getElementById('spotify-player').style.display = 'none';
+        document.getElementById('play-overlay').style.display = 'none';
+        
+        // Load previous track
+        setTimeout(() => {
+            loadSpotifyTrack(prevTrack);
+            
+            // If player was already playing, autoplay the previous track
+            if (spotifyPlayerReady) {
+                setTimeout(playSpotifyTrack, 1500);
+            }
+        }, 300);
     }
 
     // Create page indicator dots
@@ -1206,6 +1348,16 @@
             }, 500);
         }, 3000);
     }
+
+    // Add spin animation for loading
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    `;
+    document.head.appendChild(style);
 </script>
 
 </body>
